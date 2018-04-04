@@ -33,6 +33,7 @@ UNK_ID_dict['with_padding'] = 1
 UNK_ID_dict['no_padding'] = 0
 
 # Regular expressions used to tokenize.
+# 正则split，split时，如果正则部分里面有小括号，则匹配的字符串也会被列入返回的list中
 _WORD_SPLIT = re.compile("([.,!?\"':;)(])")
 _DIGIT_RE = re.compile(r"\d")
 
@@ -203,6 +204,10 @@ def create_label_vocab(vocabulary_path, data_path):
           vocab_file.write(k + "\n")
 
 def prepare_multi_task_data(data_dir, in_vocab_size, out_vocab_size):
+    '''
+    1.根据语料创建对应词典，输入语料创建输入语料词典，输出语料创建输出语料词典（对应的标注tag）
+    2.根据创建好的词典，将原始语料转换为对应的id
+    '''
     train_path = data_dir + '/train/train'
     dev_path = data_dir + '/valid/valid'
     test_path = data_dir + '/test/test'
@@ -212,6 +217,7 @@ def prepare_multi_task_data(data_dir, in_vocab_size, out_vocab_size):
     out_vocab_path = os.path.join(data_dir, "out_vocab_%d.txt" % out_vocab_size)
     label_path = os.path.join(data_dir, "label.txt")
     
+    # 创建词典
     create_vocabulary(in_vocab_path, 
                       train_path + ".seq.in", 
                       in_vocab_size, 

@@ -66,6 +66,7 @@ class MultiTaskModel(object):
     softmax_loss_function = None
 
     # Create the internal multi-layer cell for our RNN.
+    # 创建多层LSTM cell，训练时加dropout，inference时不加
     def create_cell():
       if not forward_only and dropout_keep_prob < 1.0:
         single_cell = lambda: BasicLSTMCell(self.cell_size)
@@ -78,6 +79,7 @@ class MultiTaskModel(object):
         cell = MultiRNNCell([single_cell() for _ in range(self.num_layers)])
       return cell
   
+    # 双向LSTM
     self.cell_fw = create_cell()
     self.cell_bw = create_cell()
 

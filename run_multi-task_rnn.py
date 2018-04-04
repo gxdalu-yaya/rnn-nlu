@@ -215,6 +215,7 @@ def create_model(session,
           bidirectional_rnn=FLAGS.bidirectional_rnn,
           task=task)
 
+  #断点训练，可以中途停止训练，然后读取存档，继续训练，good idea!
   ckpt = tf.train.get_checkpoint_state(FLAGS.train_dir)
   if ckpt:
     print("Reading model parameters from %s" % ckpt.model_checkpoint_path)
@@ -232,6 +233,7 @@ def train():
   vocab_path = ''
   tag_vocab_path = ''
   label_vocab_path = ''
+  #返回的是已经根据词典转换成对应id的数据
   date_set = data_utils.prepare_multi_task_data(
     FLAGS.data_dir, FLAGS.in_vocab_size, FLAGS.out_vocab_size)
   in_seq_train, out_seq_train, label_train = date_set[0]
@@ -246,6 +248,7 @@ def train():
   current_taging_valid_out_file = result_dir + '/tagging.valid.hyp.txt'
   current_taging_test_out_file = result_dir + '/tagging.test.hyp.txt'
 
+  #返回词典和词表
   vocab, rev_vocab = data_utils.initialize_vocab(vocab_path)
   tag_vocab, rev_tag_vocab = data_utils.initialize_vocab(tag_vocab_path)
   label_vocab, rev_label_vocab = data_utils.initialize_vocab(label_vocab_path)
